@@ -32,5 +32,5 @@ module "eks" {
   source = "../../modules/eks"
 
   cluster_name       = "june12-dev-eks"
-  private_subnet_ids = module.network.private_subnet_ids
+  subnet_ids = module.network.public_subnet_ids
 }

@@ -1,0 +1,40 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+
+# Terraform secrets
+terraform.tfvars
+*.auto.tfvars
+
+# AWS credentials
+.aws/
+credentials
+config
+
+# Keys
+*.pem
+*.ppk
+*.key
+id_rsa
+id_rsa.pub
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+.kube/
+
+# Env / secrets
+.env
+.env.*
+
+# Jenkins secrets
+jenkins.env
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

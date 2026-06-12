@@ -27,3 +27,10 @@ module "ecr" {
   project_name = "june12"
   environment  = "dev"
 }
+
+module "eks" {
+  source = "../../modules/eks"
+
+  cluster_name       = "june12-dev-eks"
+  private_subnet_ids = module.network.private_subnet_ids
+}

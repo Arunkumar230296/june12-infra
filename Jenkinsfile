@@ -4,7 +4,6 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
         TF_BACKEND_DIR = 'terraform/backend'
-        TF_DEV_DIR = 'terraform/environments/dev'
     }
 
     stages {
@@ -16,33 +15,53 @@ pipeline {
 
         stage('Terraform Backend Init') {
             steps {
-                dir("${TF_BACKEND_DIR}") {
-                    sh 'terraform init'
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    dir("${TF_BACKEND_DIR}") {
+                        sh 'terraform init'
+                    }
                 }
             }
         }
 
         stage('Terraform Backend Validate') {
             steps {
-                dir("${TF_BACKEND_DIR}") {
-                    sh 'terraform validate'
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    dir("${TF_BACKEND_DIR}") {
+                        sh 'terraform validate'
+                    }
                 }
             }
         }
 
         stage('Terraform Backend Plan') {
             steps {
-                dir("${TF_BACKEND_DIR}") {
-                    sh 'terraform plan'
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    dir("${TF_BACKEND_DIR}") {
+                        sh 'terraform plan'
+                    }
                 }
             }
         }
 
         stage('Terraform Backend Apply') {
             steps {
-                input message: 'Approve backend creation?'
-                dir("${TF_BACKEND_DIR}") {
-                    sh 'terraform apply -auto-approve'
+                input message: 'Approve Terraform backend creation?'
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    dir("${TF_BACKEND_DIR}") {
+                        sh 'terraform apply -auto-approve'
+                    }
                 }
             }
         }

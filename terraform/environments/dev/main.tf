@@ -20,3 +20,10 @@ module "network" {
     "us-east-1b"
   ]
 }
+
+module "ecr" {
+  source = "../../modules/ecr"
+
+  project_name = "june12"
+  environment  = "dev"
+}
